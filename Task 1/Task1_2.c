@@ -1,25 +1,58 @@
-/* Task 1: Use an existing RTOS project to write a program with one task to toggle an LED every 1000ms. */
+/* Task 2: Use an existing RTOS project to write a program that
+ * toggles 3 LEDs with 3 different tasks at the following rates
+ * respectively, 100ms, 500ms, and 1000ms. 
+ */
 
 
 /* The Task Handler */
-TaskHandle_t ToggleTaskHandler = NULL;
+TaskHandle_t LED1Handler = NULL;
+TaskHandle_t LED2Handler = NULL;
+TaskHandle_t LED3Handler = NULL;
 
 
 static void prvSetupHardware( void );
 /*-----------------------------------------------------------*/
 
 /* The task to be created */
-void Toggle_Task( void * pvParameters )
+void LED_1_Task( void * pvParameters )
 {
     for( ;; )
     {
 	    GPIO_write(PORT_0, PIN0, PIN_IS_HIGH); /* Set Pin 0 to High */
 	    
-	    vTaskDelay(1000);                      /* Wait for 1000ms = 1s */
+	    vTaskDelay(100);                       /* Wait for 100ms = 0.1s */
 	    
-	    GPIO_write(PORT_0, PIN0, PIN_IS_LOW); /* Set Pin 0 to Low */
+	    GPIO_write(PORT_0, PIN0, PIN_IS_LOW);  /* Set Pin 0 to Low */
 	    
-	    vTaskDelay(1000);                     /* Wait for 1000ms = 1s */
+	    vTaskDelay(100);                       /* Wait for 100ms = 0.1s */
+    }
+}
+
+void LED_2_Task( void * pvParameters )
+{
+    for( ;; )
+    {
+	    GPIO_write(PORT_0, PIN1, PIN_IS_HIGH); /* Set Pin 1 to High */
+	    
+	    vTaskDelay(400);                       /* Wait for 400ms = 0.4s */
+	    
+	    GPIO_write(PORT_0, PIN1, PIN_IS_LOW);  /* Set Pin 1 to Low */
+	    
+	    vTaskDelay(400);                       /* Wait for 400ms = 0.4s */
+    }
+}
+
+void LED_3_Task( void * pvParameters )
+{
+    for( ;; )
+    {
+	    GPIO_write(PORT_0, PIN2, PIN_IS_HIGH); /* Set Pin 2 to High */
+	    
+	    vTaskDelay(1000);                       /* Wait for 1000ms = 1s */
+	    
+	    GPIO_write(PORT_0, PIN2, PIN_IS_LOW);  /* Set Pin 2 to Low */
+	    
+	    vTaskDelay(1000);                       /* Wait for 1000ms = 1s */
     }
 }
 
@@ -32,12 +65,28 @@ int main( void )
     /* Create Tasks here, Storing the handle */
 
 	xTaskCreate(
-			Toggle_Task,          /* Function that implements the task. */
-			"Toggle Task",        /* Text name for the task. */
+			LED_1_Task,           /* Function that implements the task. */
+			"LED 1 Task",         /* Text name for the task. */
 			100,                  /* Stack size in words, not bytes. */
 			( void * ) 0,         /* Parameter passed into the task. */
 			1,                    /* Priority at which the task is created. */
-			&ToggleTaskHandler ); /* Used to pass out the created task's handle. */
+			&LED1Handelr );       /* Used to pass out the created task's handle. */
+	
+		xTaskCreate(
+			LED_2_Task,           /* Function that implements the task. */
+			"LED 2 Task",         /* Text name for the task. */
+			100,                  /* Stack size in words, not bytes. */
+			( void * ) 0,         /* Parameter passed into the task. */
+			1,                    /* Priority at which the task is created. */
+			&LED2Handler );       /* Used to pass out the created task's handle. */
+	
+		xTaskCreate(
+			LED_3_Task,           /* Function that implements the task. */
+			"LED 3 Task",         /* Text name for the task. */
+			100,                  /* Stack size in words, not bytes. */
+			( void * ) 0,         /* Parameter passed into the task. */
+			1,                    /* Priority at which the task is created. */
+			&LED3Handler );       /* Used to pass out the created task's handle. */
 
 	/* Now all the tasks have been started - start the scheduler.
 
