@@ -4,7 +4,9 @@
  * The action of toggling the LED shall take place after the user presses the button once and releases it.
  */
 
-/* PIN0 in PORT0 set of INPUT in GPIO_cfg.c */
+/* PIN0 in PORT0 set of INPUT in GPIO_cfg.c
+ * configUSE_PREEMPTION set to 0 in FreeRTOSConfig.h
+ */
 
 /*-----------------------------------------------------------*/
 
@@ -12,16 +14,14 @@
 
 /* Tasks Handlers */
 TaskHandle_t ButtonTaskHandler       = NULL;
-TaskHandle_t LEDTaskHandler        = NULL;
+TaskHandle_t LEDTaskHandler          = NULL;
 
 
+pinState_t ButtonState;	                    /* for the button state pressed or not */ 
+pinState_t LEDState;			    /* for the current LED state ON or OFF */
+pinState_t ToggleState;			    /* for the toggling, should take action or not */
 
-/* One for the Button state for the Button task
- * and the other is for the Pressed time on the button 
- */
-pinState_t ButtonState;
-pinState_t LEDState;
-pinState_t ToggleState;
+
 
 /* The button task to be created, Checks the button each 100ms */
 void Button_Task( void * pvParameters )
@@ -37,7 +37,7 @@ void Button_Task( void * pvParameters )
 	    
 	    }
 	    
-			vTaskDelay(100);
+	    vTaskDelay(100);
     }
 }
 
