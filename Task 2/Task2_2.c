@@ -6,7 +6,7 @@
  * Each task writing to UART shall not be interrupted by the other task.
  */
 
-/* #include "semph.h"  in main.c 
+/* #include "semphr.h"  in main.c 
  * configSUPPORT_DYNAMIC_ALLOCATION set to 1 in FreeRTOSConfig.h
  * configUSE_MUTEXES set to 1 in FreeRTOSConfig.h
  * configUSE_PREEMPTION set to 1 in FreeRTOSConfig.h
