@@ -30,8 +30,8 @@ SemaphoreHandle_t UART_Mutex          = NULL;
 // const signed portCHAR String_2[5] = {"WORLD"};
 
 /* Used Chars for easier fault detection in UART */
-const signed portCHAR String_1 = 'A';
-const signed portCHAR String_2 = 'B';
+const signed portCHAR Char_1 = 'A';
+const signed portCHAR Char_2 = 'B';
 
 /* to variables for the for loops*/  
 uint8_t i; 					/* i is a uint8 because it goes to only 10 */
@@ -51,8 +51,11 @@ void String_1_Task( void * pvParameters )
 			    
 			    for (i= 0; i < 10; i++)
 			    {
+				    // vSerialPutString( String_1, 5);
 				    
-				    xSerialPutChar (String_1);
+				    // vTaskDelay(1);                    /* A short delay so the string prints with no corruption */ 
+				    
+				    xSerialPutChar (Char_1);
 			    
 			    }
 			    
@@ -82,7 +85,11 @@ void String_2_Task( void * pvParameters )
 				    for (j = 0; j < 100000; j++)
 				    { }
 				    
-				    xSerialPutChar (String_2);
+				    // vSerialPutString( String_2, 5);
+				    
+				    // vTaskDelay(1);
+				    
+				    xSerialPutChar (Char_2);
 				    
 			    }
 			    
