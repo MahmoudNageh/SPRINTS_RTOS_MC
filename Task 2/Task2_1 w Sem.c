@@ -60,7 +60,7 @@ void LED_Task( void * pvParameters )
 {
     for( ;; )
     {
-	    if (xSemaphoreTake( BinSem, ( TickType_t ) 0 ) == pdTRUE)                       /* See if we can obtain the Semaphore */
+	    if (xSemaphoreTake( LedSem, ( TickType_t ) 0 ) == pdTRUE)                       /* See if we can obtain the Semaphore */
 	    {
 		    LEDState = GPIO_read(PORT_0, PIN1);                                     /* Read the current state of the LED ON or OFF */
 		    
