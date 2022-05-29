@@ -16,7 +16,7 @@
 
 /* Tasks Handlers */
 TaskHandle_t ButtonTaskHandler       = NULL;
-TaskHandle_t LEDTaskHandler       = NULL;
+TaskHandle_t LEDTaskHandler          = NULL;
 
 /* Semaphore Handler */
 SemaphoreHandle_t LedSem;
@@ -31,9 +31,9 @@ void Button_Task( void * pvParameters )
 {
     for( ;; )
     {
-	    ButtonState = GPIO_read(PORT_0, PIN0);
-	    
 	    xSemaphoreTake( LedSem , ( TickType_t ) 0 );                                  /* Obtain the Semaphore  */
+	    
+	    ButtonState = GPIO_read(PORT_0, PIN0);
 			
 	    if (ButtonState == PIN_IS_HIGH)                                               /* If the button is pressed let the toggle state to be TRUE */
 	    {
