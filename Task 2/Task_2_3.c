@@ -23,10 +23,10 @@ QueueHandle_t UART_Queue              = NULL;
 
 
 
-pinState_t Button_1_State;                          /* Contains the Button 1 state */
+pinState_t Button_1_State;                          /* Contains the current Button 1 state */
 pinState_t Old_1_State = PIN_IS_HIGH;               /* Contains the previous state of Button 1 */
 
-pinState_t Button_2_State;                          /* Contains the Button 2 state */
+pinState_t Button_2_State;                          /* Contains the current Button 2 state */
 pinState_t Old_2_State = PIN_IS_HIGH;               /* Contains the previous state of Button 2 */
 
 
@@ -61,7 +61,7 @@ void Button_1_Task( void * pvParameters )
 		    else                                            /* If the current state is LOW it is a Falling Edge */
 		    {
 			    xQueueSend(
-				    	xQueue1,
+				    	UART_Queue,
 				    	(void *) &B1_FallingEdge,
 				    	(TickType_t) 100 );
 		    }
@@ -93,7 +93,7 @@ void Button_2_Task( void * pvParameters )
 		    else                                            /* If the current state is LOW it is a Falling Edge */
 		    {
 			    xQueueSend(
-				    	xQueue1,
+				    	UART_Queue,
 				    	(void *) &B2_FallingEdge,
 				    	(TickType_t) 100 );
 		    }
@@ -111,7 +111,7 @@ void String_Task( void * pvParameters )
     for( ;; )
     {
 	    xQueueSend(
-		    	xQueue1,
+		    	UART_Queue,
                     	(void *) &String,
                     	(TickType_t) 100 );
 	    
@@ -125,14 +125,14 @@ void Print_Task( void *pvParameters )
 {
 	for( ;; )
 	{
-		if( xQueue1 != NULL )
+		if( UART_Queue != NULL )
 		{
-			if( xQueueReceive(xQueue1,                          /* Receive a message from the queue to hold a string */
+			if( xQueueReceive(UART_Queue,                          /* Receive a message from the queue to hold a string */
 					  &( Queue_Copy_Buffer ),           /* Queue_Copy_Buffer will hold a copy of xMessage. */
 					  ( TickType_t ) 0 ) == pdPASS )    /* Block for 10 ticks if a message is not immediately available. */
 				{	
 				
-					vSerialPutString(Queue_Buffer, 8);
+					vSerialPutString(Queue_Copy_Buffer, 8);
 				
 				}
 		 }
